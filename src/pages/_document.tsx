@@ -1,8 +1,6 @@
 import type { DocumentContext, DocumentInitialProps } from "next/document";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
-import { GA_TRACKING_ID } from "@/utils/gtag";
-
 interface DocumentProps extends DocumentInitialProps {
   isProduction: boolean;
 }
@@ -21,8 +19,6 @@ export default class CustomDocument extends Document<DocumentProps> {
   }
 
   render() {
-    const { isProduction } = this.props;
-
     return (
       <Html lang="en">
         <Head>
@@ -51,7 +47,7 @@ export default class CustomDocument extends Document<DocumentProps> {
                 logStackTraces: false,
                 logScriptExecution: true,
               };  
-            `
+            `,
             }}
           />
           <script async src="/~fernflow/debug/tool-web-worker.js" />
@@ -61,7 +57,6 @@ export default class CustomDocument extends Document<DocumentProps> {
             async
             type="text/fernflow"
             src="https://platform.twitter.com/widgets.js"
-            charSet="utf-8"
           />
         </Head>
         <body>
