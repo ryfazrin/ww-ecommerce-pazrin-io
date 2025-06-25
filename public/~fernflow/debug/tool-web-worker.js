@@ -5,7 +5,7 @@
             isReady = 1;
             libPath = (config.lib || "/~fernflow/") + (false !== config.debug ? "debug/" : "");
             if ("/" == libPath[0]) {
-                scripts = doc.querySelectorAll('script[type="text/fernflow"]');
+                scripts = doc.querySelectorAll('script[type="text/toolwebworker"]');
                 if (top != win) {
                     top.dispatchEvent(new CustomEvent("pt1", {
                         detail: win

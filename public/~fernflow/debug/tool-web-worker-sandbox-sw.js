@@ -270,12 +270,12 @@
         let $winId$ = winCtx.$winId$;
         let win = winCtx.$window$;
         let doc = win.document;
-        let scriptSelector = 'script[type="text/fernflow"]:not([data-ptid]):not([data-pterror])';
+        let scriptSelector = 'script[type="text/toolwebworker"]:not([data-ptid]):not([data-pterror])';
         let scriptElm;
         let $instanceId$;
         let scriptData;
         if (doc && doc.body) {
-            scriptElm = doc.querySelector('script[type="text/fernflow"]:not([data-ptid]):not([data-pterror]):not([async]):not([defer])');
+            scriptElm = doc.querySelector('script[type="text/toolwebworker"]:not([data-ptid]):not([data-pterror]):not([async]):not([defer])');
             scriptElm || (scriptElm = doc.querySelector(scriptSelector));
             if (scriptElm) {
                 scriptElm.dataset.ptid = $instanceId$ = getAndSetInstanceId(scriptElm, $winId$);

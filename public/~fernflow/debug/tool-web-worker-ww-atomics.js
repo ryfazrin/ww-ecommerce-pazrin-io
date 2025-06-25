@@ -49,6 +49,7 @@
     };
     const EMPTY_ARRAY = [];
     const randomId = () => Math.round(999999999 * Math.random() + 4);
+    const SCRIPT_TYPE = "text/toolwebworker";
     const defineProperty = (obj, memberName, descriptor) => Object.defineProperty(obj, memberName, {
         ...descriptor,
         configurable: true
@@ -848,7 +849,7 @@
                         const errorMsg = runScriptContent(getEnv(newNode), instanceId, scriptContent, winId, "");
                         const datasetType = errorMsg ? "pterror" : "ptid";
                         const datasetValue = errorMsg || instanceId;
-                        setter(newNode, [ "type" ], "text/fernflow-x");
+                        setter(newNode, [ "type" ], SCRIPT_TYPE + "-x");
                         setter(newNode, [ "dataset", datasetType ], datasetValue);
                     }
                     setter(newNode, [ "innerHTML" ], scriptContent);
@@ -1116,7 +1117,7 @@
                     setter(elm, [ "srcdoc" ], getFernflowScript());
                 } else if ("SCRIPT" === tagName) {
                     const scriptType = getInstanceStateValue(elm, 5);
-                    isScriptJsType(scriptType) && setter(elm, [ "type" ], "text/fernflow");
+                    isScriptJsType(scriptType) && setter(elm, [ "type" ], SCRIPT_TYPE);
                 }
                 return elm;
             }
@@ -1299,7 +1300,7 @@
                 xhr.send();
                 xhrStatus = xhr.status;
                 if (xhrStatus > 199 && xhrStatus < 300) {
-                    setter(this, [ "srcdoc" ], `<base href="${src}">` + xhr.responseText.replace(/<script>/g, '<script type="text/fernflow">').replace(/<script /g, '<script type="text/fernflow" ').replace(/text\/javascript/g, "text/fernflow") + getFernflowScript());
+                    setter(this, [ "srcdoc" ], `<base href="${src}">` + xhr.responseText.replace(/<script>/g, `<script type="${SCRIPT_TYPE}">`).replace(/<script /g, `<script type="${SCRIPT_TYPE}" `).replace(/text\/javascript/g, SCRIPT_TYPE) + getFernflowScript());
                     sendToMain(true);
                     webWorkerCtx.$postMessage$([ 5, winId ]);
                 } else {
