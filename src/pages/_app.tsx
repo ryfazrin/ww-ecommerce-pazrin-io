@@ -28,24 +28,32 @@ const poppins = Poppins({
   variable: "--main-font",
 });
 
+declare global {
+  interface Window {
+    _callStackDepths?: number[];
+  }
+}
+
 // Fungsi untuk log call stack dan kedalamannya
 const logCallStack = (context: string) => {
   try {
-    const stack = new Error().stack?.split('\n').slice(1) || [];
-    (window as any)._callStackDepths = (window as any)._callStackDepths || [];
-    (window as any)._callStackDepths.push(stack.length);
+    const stack = new Error().stack?.split("\n").slice(1) || [];
+    window._callStackDepths = window._callStackDepths || [];
+    window._callStackDepths.push(stack.length);
     console.log(`[CallStack][Main][${context}] Kedalaman: ${stack.length}`);
     // console.trace(); // Uncomment jika ingin melihat trace detail
   } catch (e) {
-    console.error(`[CallStack][Main thread][${context}] Error logging call stack:`, e);
+    console.error(
+      `[CallStack][Main thread][${context}] Error logging call stack:`,
+      e,
+    );
   }
 };
 
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
   // Log the call stack to measure main thread stack
-  logCallStack('Main thread');
-  
+  logCallStack("Main thread");
+
   return (
     <Fragment>
       <style jsx global>{`
@@ -95,6 +103,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <Component {...pageProps} />
     </Fragment>
   );
-}
+};
 
 export default wrapper.withRedux(MyApp);
