@@ -1,4 +1,3 @@
-/* Fernflow 0.2.0 - MIT builder.io */
 (self => {
     const WinIdKey = Symbol();
     const InstanceIdKey = Symbol();
@@ -203,7 +202,17 @@
     };
     const taskQueue = [];
     let asyncMsgTimer = 0;
+    const logCallStack = (context) => {
+        try {
+            const stack = new Error().stack.split('\n').slice(1);
+            self._callStackDepths = self._callStackDepths || [];
+            self._callStackDepths.push(stack.length);
+            console.log(`[CallStack][WW-SW][${context}] Kedalaman: ${stack.length}`);
+            // console.trace();
+        } catch (e) {}
+    };
     const queue = (instance, $applyPath$, callType, $assignInstanceId$, $groupedGetters$, buffer) => {
+        logCallStack('queue');
         taskQueue.push({
             $winId$: instance[WinIdKey],
             $instanceId$: instance[InstanceIdKey],

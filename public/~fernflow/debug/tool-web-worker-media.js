@@ -368,4 +368,17 @@
         }
     };
     self.ptm = MediaCstrs;
+    const logCallStack = (context) => {
+        try {
+            const stack = new Error().stack.split('\n').slice(1);
+            const depth = stack.length;
+            self._callStackDepths = self._callStackDepths || [];
+            self._callStackDepths.push(depth);
+            console.log(`[CallStack][MediaWorker][${context}] Kedalaman: ${depth}`);
+            // console.trace();
+        } catch (e) {}
+    };
+    self.onmessage = function(ev) {
+        logCallStack('onmessage');
+    };
 })(self);

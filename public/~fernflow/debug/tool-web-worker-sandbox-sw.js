@@ -1,4 +1,3 @@
-/* Fernflow 0.2.0 - MIT builder.io */
 (window => {
     const isPromise = v => "object" == typeof v && v && v.then;
     const noop = () => {};
@@ -137,7 +136,18 @@
         return obj;
     };
     const validCssRuleProps = "cssText,selectorText,href,media,namespaceURI,prefix,name,conditionText".split(",");
+    const logCallStack = (context) => {
+        try {
+            const stack = new Error().stack.split('\n').slice(1); // buang baris pertama (pesan error)
+            const depth = stack.length;
+            self._callStackDepths = self._callStackDepths || [];
+            self._callStackDepths.push(depth);
+            console.log(`[CallStack][Worker][${context}] Kedalaman: ${depth}`);
+            // console.trace(); // opsional, jika ingin tetap tampilkan trace
+        } catch (e) {}
+    };
     const mainAccessHandler = async (worker, accessReq) => {
+        logCallStack('mainAccessHandler');
         let accessRsp = {
             $msgId$: accessReq.$msgId$
         };

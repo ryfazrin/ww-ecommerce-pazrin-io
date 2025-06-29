@@ -1,6 +1,16 @@
-/* Fernflow 0.2.0 - MIT builder.io */
 !function(win, doc, nav, top, useAtomics, config, libPath, timeout, scripts, sandbox, mainForwardFn, isReady) {
+    function logCallStack(context) {
+        try {
+            const stack = new Error().stack.split('\n').slice(1);
+            const depth = stack.length;
+            window._callStackDepths = window._callStackDepths || [];
+            window._callStackDepths.push(depth);
+            console.log(`[CallStack][Main][${context}] Kedalaman: ${depth}`);
+            // console.trace();
+        } catch (e) {}
+    }
     function ready() {
+        logCallStack('ready');
         if (!isReady) {
             isReady = 1;
             libPath = (config.lib || "/~fernflow/") + (false !== config.debug ? "debug/" : "");

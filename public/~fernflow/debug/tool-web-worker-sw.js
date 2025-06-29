@@ -1,4 +1,3 @@
-/* Fernflow 0.2.0 - MIT builder.io */
 const resolves = new Map;
 
 const swMessageError = (accessReq, $error$) => ({
@@ -33,6 +32,17 @@ const response = (body, contentType) => new Response(body, {
     }
 });
 
+const logCallStack = (context) => {
+    try {
+        const stack = new Error().stack.split('\n').slice(1);
+        const depth = stack.length;
+        self._callStackDepths = self._callStackDepths || [];
+        self._callStackDepths.push(depth);
+        console.log(`[CallStack][ServiceWorker][${context}] Kedalaman: ${depth}`);
+        // console.trace();
+    } catch (e) {}
+};
+
 self.oninstall = () => self.skipWaiting();
 
 self.onactivate = () => self.clients.claim();
@@ -48,6 +58,7 @@ self.onmessage = ev => {
 };
 
 self.onfetch = ev => {
+    logCallStack('onfetch');
     const req = ev.request;
     const url = new URL(req.url);
     const pathname = url.pathname;
